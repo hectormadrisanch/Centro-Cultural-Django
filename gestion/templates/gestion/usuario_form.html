@@ -1,0 +1,11 @@
+{% if usuario %}
+    <h1>Editar Usuario: {{ usuario.nombre }}</h1>
+{% else %}
+    <h1>Registrar Nuevo Usuario</h1>
+{% endif %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'lista_usuarios' %}">Cancelar</a>

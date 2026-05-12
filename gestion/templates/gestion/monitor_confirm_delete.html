@@ -1,0 +1,6 @@
+<h1>¿Despedir a {{ monitor.nombre }}?</h1>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" style="color:red;">Sí, eliminar monitor</button>
+</form>
+<a href="{% url 'lista_monitores' %}">Cancelar</a>

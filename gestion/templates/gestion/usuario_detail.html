@@ -1,0 +1,6 @@
+<h1>Ficha de Usuario: {{ usuario.nombre }}</h1>
+<p><strong>Edad:</strong> {{ usuario.edad }}</p>
+<p><strong>Email:</strong> {{ usuario.email }}</p>
+<p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+<a href="{% url 'editar_usuario' usuario.id %}"> Editar datos</a><br><br>
+<a href="{% url 'lista_usuarios' %}">Volver a la lista</a>

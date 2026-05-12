@@ -1,0 +1,11 @@
+{% if monitor %}
+    <h1>Editar Monitor: {{ monitor.nombre }}</h1>
+{% else %}
+    <h1>Registrar Nuevo Monitor</h1>
+{% endif %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'lista_monitores' %}">Cancelar</a>

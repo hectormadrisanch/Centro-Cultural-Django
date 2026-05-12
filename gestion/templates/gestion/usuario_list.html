@@ -1,0 +1,12 @@
+<h1>Lista de Usuarios Inscritos</h1>
+<a href="{% url 'crear_usuario' %}"> Dar de alta nuevo usuario</a>
+<ul>
+    {% for usuario in usuarios %}
+        <li>
+            <a href="{% url 'detalle_usuario' usuario.id %}">{{ usuario.nombre }}</a> 
+            - {{ usuario.email }}
+            <a href="{% url 'eliminar_usuario' usuario.id %}" style="color:red;">[Borrar]</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'lista_actividades' %}">Volver a Actividades</a>

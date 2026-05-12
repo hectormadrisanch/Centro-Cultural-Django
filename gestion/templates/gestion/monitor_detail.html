@@ -1,0 +1,14 @@
+<h1>Ficha del Monitor: {{ monitor.nombre }}</h1>
+<p><strong>Especialización:</strong> {{ monitor.especializacion }}</p>
+
+<h3>Actividades que imparte:</h3>
+<ul>
+    {% for actividad in monitor.actividades.all %}
+        <li>{{ actividad.nombre }} ({{ actividad.horario }})</li>
+    {% empty %}
+        <li>Aún no tiene actividades asignadas.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'editar_monitor' monitor.id %}">✏️ Editar datos</a><br><br>
+<a href="{% url 'lista_monitores' %}">Volver a la lista</a>

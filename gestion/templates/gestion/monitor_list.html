@@ -1,0 +1,12 @@
+<h1>Plantilla de Monitores</h1>
+<a href="{% url 'crear_monitor' %}"> Añadir nuevo monitor</a>
+<ul>
+    {% for monitor in monitores %}
+        <li>
+            <a href="{% url 'detalle_monitor' monitor.id %}">{{ monitor.nombre }}</a> 
+            - Especialidad: {{ monitor.especializacion }}
+            <a href="{% url 'eliminar_monitor' monitor.id %}" style="color:red;">[Borrar]</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'inicio' %}">Volver al Inicio</a>

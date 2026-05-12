@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Actividad
-from .forms import ActividadForm
+from .models import Actividad, Usuario, Monitor
+from .forms import ActividadForm, UsuarioForm, MonitorForm
 
 def lista_actividades(request):
     actividades = Actividad.objects.all()
@@ -55,3 +55,79 @@ def editar_actividad(request, id):
     
     # ¡Reutilizamos el mismo archivo HTML que usamos para crear!
     return render(request, 'gestion/actividad_form.html', {'form': form, 'actividad': actividad})
+
+
+# vistas para usuarios
+def lista_usuarios(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'gestion/usuario_list.html', {'usuarios': usuarios})
+
+def detalle_usuario(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
+    return render(request, 'gestion/usuario_detail.html', {'usuario': usuario})
+
+def crear_usuario(request):
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_usuarios')
+    else:
+        form = UsuarioForm()
+    return render(request, 'gestion/usuario_form.html', {'form': form})
+
+def editar_usuario(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('detalle_usuario', id=usuario.id)
+    else:
+        form = UsuarioForm(instance=usuario)
+    return render(request, 'gestion/usuario_form.html', {'form': form, 'usuario': usuario})
+
+def eliminar_usuario(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
+    if request.method == 'POST':
+        usuario.delete()
+        return redirect('lista_usuarios')
+    return render(request, 'gestion/usuario_confirm_delete.html', {'usuario': usuario})
+
+
+# VISTAS PARA MONITORES
+def lista_monitores(request):
+    monitores = Monitor.objects.all()
+    return render(request, 'gestion/monitor_list.html', {'monitores': monitores})
+
+def detalle_monitor(request, id):
+    monitor = get_object_or_404(Monitor, id=id)
+    return render(request, 'gestion/monitor_detail.html', {'monitor': monitor})
+
+def crear_monitor(request):
+    if request.method == 'POST':
+        form = MonitorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_monitores')
+    else:
+        form = MonitorForm()
+    return render(request, 'gestion/monitor_form.html', {'form': form})
+
+def editar_monitor(request, id):
+    monitor = get_object_or_404(Monitor, id=id)
+    if request.method == 'POST':
+        form = MonitorForm(request.POST, instance=monitor)
+        if form.is_valid():
+            form.save()
+            return redirect('detalle_monitor', id=monitor.id)
+    else:
+        form = MonitorForm(instance=monitor)
+    return render(request, 'gestion/monitor_form.html', {'form': form, 'monitor': monitor})
+
+def eliminar_monitor(request, id):
+    monitor = get_object_or_404(Monitor, id=id)
+    if request.method == 'POST':
+        monitor.delete()
+        return redirect('lista_monitores')
+    return render(request, 'gestion/monitor_confirm_delete.html', {'monitor': monitor})
