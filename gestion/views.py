@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Actividad, Usuario, Monitor, Sala
-from .forms import ActividadForm, UsuarioForm, MonitorForm, SalaForm
+from .forms import ActividadForm, UsuarioForm, MonitorForm, SalaForm, InscribirUsuarioForm
 
 def lista_actividades(request):
     actividades = Actividad.objects.all()
@@ -169,3 +169,42 @@ def eliminar_sala(request, id):
         sala.delete()
         return redirect('lista_salas')
     return render(request, 'gestion/sala_confirm_delete.html', {'sala': sala})
+
+
+# VISTAS PARA INSCRIPCIONES
+def lista_inscripciones(request, id):
+    # Cogemos la actividad específica
+    actividad = get_object_or_404(Actividad, id=id)
+    # Sacamos todos los usuarios apuntados a ESA actividad
+    usuarios_apuntados = actividad.usuarios_inscritos.all()
+    
+    return render(request, 'gestion/inscripciones_list.html', {
+        'actividad': actividad, 
+        'usuarios': usuarios_apuntados
+    })
+
+def inscribir_usuario(request, id):
+    actividad = get_object_or_404(Actividad, id=id)
+    
+    if request.method == 'POST':
+        form = InscribirUsuarioForm(request.POST)
+        if form.is_valid():
+            usuario_seleccionado = form.cleaned_data['usuario']
+            # ¡La magia del N a N en Django! Añadimos el usuario a la actividad
+            actividad.usuarios_inscritos.add(usuario_seleccionado)
+            return redirect('lista_inscripciones', id=actividad.id)
+    else:
+        form = InscribirUsuarioForm()
+        
+    return render(request, 'gestion/inscribir_form.html', {'form': form, 'actividad': actividad})
+
+
+def eliminar_inscripcion(request, id, usuario_id):
+    actividad = get_object_or_404(Actividad, id=id)
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+    
+    # Desapuntamos al usuario de la actividad
+    actividad.usuarios_inscritos.remove(usuario)
+    
+    # Volvemos a la lista de alumnos de ESA actividad
+    return redirect('lista_inscripciones', id=actividad.id)

@@ -1,0 +1,18 @@
+<h1>Alumnos de: {{ actividad.nombre }}</h1>
+<p><strong>Plazas totales:</strong> {{ actividad.plazas_disponibles }}</p>
+
+<p><a href="{% url 'inscribir_usuario' actividad.id %}"> Matricular nuevo usuario</a></p>
+
+<ul>
+    {% for usuario in usuarios %}
+        <li>
+            {{ usuario.nombre }} ({{ usuario.email }})
+            - <a href="{% url 'eliminar_inscripcion' actividad.id usuario.id %}" style="color:red;">[Dar de baja]</a>
+        </li>
+    {% empty %}
+        <li>No hay ningún usuario apuntado a esta actividad todavía.</li>
+    {% endfor %}
+</ul>
+
+<br>
+<a href="{% url 'detalle_actividad' actividad.id %}">Volver al detalle de la actividad</a>

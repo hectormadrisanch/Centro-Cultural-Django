@@ -20,3 +20,6 @@ class SalaForm(forms.ModelForm):
     class Meta:
         model = Sala
         fields = '__all__'
+
+class InscribirUsuarioForm(forms.Form):
+    usuario = forms.ModelChoiceField(queryset=Usuario.objects.all(), label="Selecciona un usuario")

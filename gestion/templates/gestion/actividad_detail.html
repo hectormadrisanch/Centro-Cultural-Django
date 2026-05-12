@@ -18,7 +18,8 @@
 
     <h3>Descripción</h3>
     <p>{{ actividad.descripcion }}</p>
-
+    <a href="{% url 'lista_inscripciones' actividad.id %}"> Ver usuarios inscritos / Matricular</a>
+    <br><br>
     <a href="{% url 'editar_actividad' actividad.id %}"> Editar esta actividad</a>
     <br><br>
     <a href="{% url 'lista_actividades' %}">Volver al catálogo</a>

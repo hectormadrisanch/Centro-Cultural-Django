@@ -1,0 +1,10 @@
+<h1>Matricular alumno en: {{ actividad.nombre }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Matricular Usuario</button>
+</form>
+
+<br>
+<a href="{% url 'lista_inscripciones' actividad.id %}">Cancelar y volver a la lista</a>
