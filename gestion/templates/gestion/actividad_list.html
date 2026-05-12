@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Centro Cultural - Actividades</title>
+</head>
+<body>
+    <h1>Catálogo de Actividades</h1>
+    <a href="{% url 'crear_actividad' %}"> Añadir nueva actividad</a>
+    
+    <ul>
+        {% for actividad in actividades %}
+            <li>
+                <a href="{% url 'detalle_actividad' actividad.id %}">
+                    <strong>{{ actividad.nombre }}</strong>
+                </a> 
+                ({{ actividad.tipo }}) - Monitor: {{ actividad.monitor.nombre }} - Plazas: {{ actividad.plazas_disponibles }}
+                
+                - <a href="{% url 'eliminar_actividad' actividad.id %}" style="color: red;">[Borrar]</a>
+            </li>
+        {% empty %}
+            <li>Todavía no hay actividades registradas en el centro.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

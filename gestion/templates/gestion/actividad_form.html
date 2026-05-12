@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Actividad</title>
+</head>
+<body>
+    {% if actividad %}
+        <h1>Editar actividad: {{ actividad.nombre }}</h1>
+    {% else %}
+        <h1>Añadir nueva actividad al centro</h1>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %} {{ form.as_p }} <button type="submit">Guardar Actividad</button>
+    </form>
+
+    <br>
+    <a href="{% url 'lista_actividades' %}">Cancelar y volver</a>
+</body>
+</html>
