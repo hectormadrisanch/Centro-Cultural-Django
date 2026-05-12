@@ -2,65 +2,67 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Actividad, Usuario, Monitor, Sala
 from .forms import ActividadForm, UsuarioForm, MonitorForm, SalaForm, InscribirUsuarioForm
 
+def home(request):
+    return render(request, 'gestion/home.html')
+
 def lista_actividades(request):
     actividades = Actividad.objects.all()
     return render(request, 'gestion/actividad_list.html', {'actividades': actividades})
 
-# --- AÑADE ESTO NUEVO ---
 def detalle_actividad(request, id):
-    # Buscamos la actividad por su ID, o devolvemos un 404 si no existe
     actividad = get_object_or_404(Actividad, id=id)
     return render(request, 'gestion/actividad_detail.html', {'actividad': actividad})
 
 def crear_actividad(request):
     if request.method == 'POST':
-        # Si el usuario ha rellenado el formulario y le ha dado a guardar
         form = ActividadForm(request.POST)
         if form.is_valid():
-            form.save() # ¡Magia! Se guarda en la base de datos
-            return redirect('lista_actividades') # Lo devolvemos a la lista
+            form.save() 
+            return redirect('lista_actividades') 
     else:
-        # Si solo está entrando a la página, le enseñamos el formulario vacío
         form = ActividadForm()
     
     return render(request, 'gestion/actividad_form.html', {'form': form})
 
 
 def eliminar_actividad(request, id):
-    # Buscamos la actividad que queremos borrar
     actividad = get_object_or_404(Actividad, id=id)
     
     if request.method == 'POST':
-        # Si le da al botón de confirmar, la borramos y volvemos a la lista
         actividad.delete()
         return redirect('lista_actividades')
         
-    # Si entra por primera vez, le enseñamos la pantalla de confirmación
     return render(request, 'gestion/actividad_confirm_delete.html', {'actividad': actividad})
 
 
 def editar_actividad(request, id):
-    # Buscamos la actividad que queremos editar
     actividad = get_object_or_404(Actividad, id=id)
     
     if request.method == 'POST':
-        # Guardamos los cambios hechos sobre ESA actividad
         form = ActividadForm(request.POST, instance=actividad)
         if form.is_valid():
             form.save()
-            return redirect('detalle_actividad', id=actividad.id) # Volvemos al detalle
+            return redirect('detalle_actividad', id=actividad.id)
     else:
-        # Le enseñamos el formulario pre-rellenado
         form = ActividadForm(instance=actividad)
     
-    # ¡Reutilizamos el mismo archivo HTML que usamos para crear!
     return render(request, 'gestion/actividad_form.html', {'form': form, 'actividad': actividad})
 
 
 # vistas para usuarios
 def lista_usuarios(request):
     usuarios = Usuario.objects.all()
-    return render(request, 'gestion/usuario_list.html', {'usuarios': usuarios})
+    actividades_lista = Actividad.objects.all()
+    
+    query_actividad = request.GET.get('actividad')
+    if query_actividad:
+        usuarios = usuarios.filter(actividades__id=query_actividad)
+        
+    return render(request, 'gestion/usuario_list.html', {
+        'usuarios': usuarios, 
+        'actividades_lista': actividades_lista
+    })
+
 
 def detalle_usuario(request, id):
     usuario = get_object_or_404(Usuario, id=id)
@@ -173,9 +175,7 @@ def eliminar_sala(request, id):
 
 # VISTAS PARA INSCRIPCIONES
 def lista_inscripciones(request, id):
-    # Cogemos la actividad específica
     actividad = get_object_or_404(Actividad, id=id)
-    # Sacamos todos los usuarios apuntados a ESA actividad
     usuarios_apuntados = actividad.usuarios_inscritos.all()
     
     return render(request, 'gestion/inscripciones_list.html', {
@@ -190,7 +190,6 @@ def inscribir_usuario(request, id):
         form = InscribirUsuarioForm(request.POST)
         if form.is_valid():
             usuario_seleccionado = form.cleaned_data['usuario']
-            # ¡La magia del N a N en Django! Añadimos el usuario a la actividad
             actividad.usuarios_inscritos.add(usuario_seleccionado)
             return redirect('lista_inscripciones', id=actividad.id)
     else:
@@ -203,8 +202,27 @@ def eliminar_inscripcion(request, id, usuario_id):
     actividad = get_object_or_404(Actividad, id=id)
     usuario = get_object_or_404(Usuario, id=usuario_id)
     
-    # Desapuntamos al usuario de la actividad
     actividad.usuarios_inscritos.remove(usuario)
     
-    # Volvemos a la lista de alumnos de ESA actividad
     return redirect('lista_inscripciones', id=actividad.id)
+
+def lista_actividades(request):
+    actividades = Actividad.objects.all()
+    monitores = Monitor.objects.all()
+    
+    query_nombre = request.GET.get('q') 
+    query_tipo = request.GET.get('tipo')
+    
+    
+    if query_nombre:
+        actividades = actividades.filter(nombre__icontains=query_nombre)
+        
+   
+    if query_tipo:
+        actividades = actividades.filter(tipo__icontains=query_tipo)
+        
+    query_monitor = request.GET.get('monitor')
+    if query_monitor:
+        actividades = actividades.filter(monitor__id=query_monitor)
+
+    return render(request, 'gestion/actividad_list.html', {'actividades': actividades, 'monitores': monitores})

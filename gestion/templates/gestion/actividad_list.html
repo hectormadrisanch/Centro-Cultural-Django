@@ -8,6 +8,28 @@
     <h1>Catálogo de Actividades</h1>
     <a href="{% url 'crear_actividad' %}"> Añadir nueva actividad</a>
     
+<hr>
+    <form method="GET" style="margin-bottom: 20px;">
+        <label>Buscar por nombre:</label>
+        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Ej: Memoria...">
+        
+        <label>Filtrar por tipo:</label>
+        <input type="text" name="tipo" value="{{ request.GET.tipo }}" placeholder="Ej: Físico...">
+        <label>Monitor:</label>
+        <select name="monitor">
+            <option value="">-- Todos los monitores --</option>
+            {% for monitor in monitores %}
+                <option value="{{ monitor.id }}" {% if request.GET.monitor == monitor.id|stringformat:"s" %}selected{% endif %}>
+                    ID: {{ monitor.id }} - {{ monitor.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit"> Buscar</button>
+        <a href="{% url 'lista_actividades' %}">Limpiar filtros</a>
+    </form>
+    <hr>
+
     <ul>
         {% for actividad in actividades %}
             <li>
@@ -23,4 +45,6 @@
         {% endfor %}
     </ul>
 </body>
+
+<a href="{% url 'inicio' %}"> Volver al Menú Principal</a>
 </html>

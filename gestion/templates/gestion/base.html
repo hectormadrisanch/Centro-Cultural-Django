@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Centro Cultural</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --bg: #f4f7f6;
+            --text: #333;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        h1 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; }
+        a { color: var(--secondary); text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        
+        /* Botones estilo moderno */
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background: var(--secondary);
+            color: white !important;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .btn-delete { background: var(--accent); }
+
+        /* Estilo para los formularios y listas */
+        ul { padding: 0; list-style: none; }
+        li { background: #f9f9f9; margin: 10px 0; padding: 15px; border-radius: 5px; border-left: 5px solid var(--secondary); }
+        form p { background: #f9f9f9; padding: 10px; border-radius: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="{% url 'inicio' %}"> Inicio</a> | 
+            <a href="{% url 'lista_actividades' %}"> Actividades</a> | 
+            <a href="{% url 'lista_usuarios' %}"> Usuarios</a>
+        </nav>
+        <hr>
+        
+        {% block contenido %}
+        {% endblock %}
+
+        <footer style="margin-top: 50px; font-size: 0.8em; color: #888; text-align: center;">
+            &copy; 
+        </footer>
+    </div>
+</body>
+</html>
