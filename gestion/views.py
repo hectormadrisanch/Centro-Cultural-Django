@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Actividad, Usuario, Monitor
-from .forms import ActividadForm, UsuarioForm, MonitorForm
+from .models import Actividad, Usuario, Monitor, Sala
+from .forms import ActividadForm, UsuarioForm, MonitorForm, SalaForm
 
 def lista_actividades(request):
     actividades = Actividad.objects.all()
@@ -131,3 +131,41 @@ def eliminar_monitor(request, id):
         monitor.delete()
         return redirect('lista_monitores')
     return render(request, 'gestion/monitor_confirm_delete.html', {'monitor': monitor})
+
+
+# VISTAS PARA SALAS
+def lista_salas(request):
+    salas = Sala.objects.all()
+    return render(request, 'gestion/sala_list.html', {'salas': salas})
+
+def detalle_sala(request, id):
+    sala = get_object_or_404(Sala, id=id)
+    return render(request, 'gestion/sala_detail.html', {'sala': sala})
+
+def crear_sala(request):
+    if request.method == 'POST':
+        form = SalaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_salas')
+    else:
+        form = SalaForm()
+    return render(request, 'gestion/sala_form.html', {'form': form})
+
+def editar_sala(request, id):
+    sala = get_object_or_404(Sala, id=id)
+    if request.method == 'POST':
+        form = SalaForm(request.POST, instance=sala)
+        if form.is_valid():
+            form.save()
+            return redirect('detalle_sala', id=sala.id)
+    else:
+        form = SalaForm(instance=sala)
+    return render(request, 'gestion/sala_form.html', {'form': form, 'sala': sala})
+
+def eliminar_sala(request, id):
+    sala = get_object_or_404(Sala, id=id)
+    if request.method == 'POST':
+        sala.delete()
+        return redirect('lista_salas')
+    return render(request, 'gestion/sala_confirm_delete.html', {'sala': sala})

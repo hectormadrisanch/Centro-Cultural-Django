@@ -1,0 +1,6 @@
+<h1>¿Eliminar la sala {{ sala.nombre }}?</h1>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" style="color:red;">Sí, destruir sala</button>
+</form>
+<a href="{% url 'lista_salas' %}">Cancelar</a>

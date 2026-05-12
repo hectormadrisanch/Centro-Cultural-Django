@@ -1,0 +1,13 @@
+<h1>Detalle de la Sala: {{ sala.nombre }}</h1>
+<p><strong>Ubicación:</strong> {{ sala.ubicacion }}</p>
+<p><strong>Capacidad:</strong> {{ sala.capacidad }} personas</p>
+<p><strong>Responsable Técnico:</strong> 
+    {% if sala.responsable %}
+        {{ sala.responsable.nombre }} (Tel: {{ sala.responsable.telefono }})
+    {% else %}
+        No asignado
+    {% endif %}
+</p>
+
+<a href="{% url 'editar_sala' sala.id %}"> Editar datos</a><br><br>
+<a href="{% url 'lista_salas' %}">Volver a la lista</a>

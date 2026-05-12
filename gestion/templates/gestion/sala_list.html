@@ -1,0 +1,12 @@
+<h1>Listado de Salas</h1>
+<a href="{% url 'crear_sala' %}"> Dar de alta nueva sala</a>
+<ul>
+    {% for sala in salas %}
+        <li>
+            <a href="{% url 'detalle_sala' sala.id %}">{{ sala.nombre }}</a> 
+            - Ubicación: {{ sala.ubicacion }}
+            <a href="{% url 'eliminar_sala' sala.id %}" style="color:red;">[Borrar]</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'inicio' %}">Volver al Inicio</a>

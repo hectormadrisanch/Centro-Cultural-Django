@@ -1,0 +1,11 @@
+{% if sala %}
+    <h1>Editar Sala: {{ sala.nombre }}</h1>
+{% else %}
+    <h1>Registrar Nueva Sala</h1>
+{% endif %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'lista_salas' %}">Cancelar</a>

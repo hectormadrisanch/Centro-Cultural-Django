@@ -23,4 +23,11 @@ urlpatterns = [
     path('monitores/<int:id>/', views.detalle_monitor, name='detalle_monitor'),
     path('monitores/<int:id>/editar/', views.editar_monitor, name='editar_monitor'),
     path('monitores/<int:id>/eliminar/', views.eliminar_monitor, name='eliminar_monitor'),
+
+    # Salas
+    path('salas/', views.lista_salas, name='lista_salas'),
+    path('salas/nueva/', views.crear_sala, name='crear_sala'),
+    path('salas/<int:id>/', views.detalle_sala, name='detalle_sala'),
+    path('salas/<int:id>/editar/', views.editar_sala, name='editar_sala'),
+    path('salas/<int:id>/eliminar/', views.eliminar_sala, name='eliminar_sala'),
 ]
