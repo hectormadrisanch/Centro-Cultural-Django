@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Centro Cultural - Gestión</title>
+</head>
+<body>
+    <h1> Sistema de Gestión: Centro Cultural</h1>
+    
+    <hr>
+
+    <div style="display: flex; gap: 20px;">
+        <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 200px;">
+            <h3> Actividades</h3>
+            <p>Gestiona el catálogo, horarios y tipos.</p>
+            <a href="{% url 'lista_actividades' %}"> Entrar</a>
+        </div>
+
+        <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 200px;">
+            <h3> Usuarios</h3>
+            <p>Altas, bajas y gestión de alumnos.</p>
+            <a href="{% url 'lista_usuarios' %}"> Entrar</a>
+        </div>
+
+        <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 200px;">
+            <h3> Monitores</h3>
+            <p>Plantilla de profesores y especialidades.</p>
+            <a href="{% url 'lista_monitores' %}"> Entrar</a>
+        </div>
+
+        <div style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 200px;">
+            <h3> Salas</h3>
+            <p>Control de espacios y ubicaciones.</p>
+            <a href="{% url 'lista_salas' %}"> Entrar</a>
+        </div>
+    </div>
+    <div style="padding: 20px; border: 2px solid var(--secondary); border-radius: 10px; background-color: #eaf2f8;">
+            <h3> Programación Semanal</h3>
+            <p>Vista resumen con ocupación y alumnos.</p>
+            <a href="{% url 'programacion_semanal' %}" class="btn">Ver Cartelera</a>
+        </div>
+
+    <br>
+    <hr>
+    
+</body>
+</html>

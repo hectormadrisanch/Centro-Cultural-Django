@@ -1,0 +1,50 @@
+{% extends 'gestion/base.html' %}
+
+{% block contenido %}
+    <h1> Programación Semanal</h1>
+    <p>Consulta rápida de las actividades, estado de ocupación y listado de alumnos.</p>
+
+    <div style="display: grid; gap: 20px;">
+        {% for act in actividades %}
+        <div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <h2 style="color: var(--primary); margin-top: 0;">{{ act.nombre }} <small>({{ act.tipo }})</small></h2>
+            
+            <div style="display: flex; gap: 40px; margin-bottom: 15px;">
+                <p><strong> Monitor:</strong> {{ act.monitor.nombre }}</p>
+                <p><strong> Sala:</strong> {{ act.sala_principal.nombre|default:"Sin asignar" }}</p>
+                
+                {% with inscritos=act.usuarios_inscritos.count %}
+                <p>
+                    <strong> Ocupación:</strong> {{ inscritos }} / {{ act.plazas_disponibles }} plazas 
+                    
+                    {% if inscritos >= act.plazas_disponibles %}
+                        <span style="color: white; background-color: #e74c3c; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-left: 10px;">COMPLETO</span>
+                    {% else %}
+                        <span style="color: white; background-color: #2ecc71; padding: 3px 8px; border-radius: 4px; font-weight: bold; margin-left: 10px;">PLAZAS LIBRES</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <hr style="border: 0; border-top: 1px dashed #ccc;">
+            
+            <p><strong> Personas apuntadas:</strong></p>
+            {% if inscritos > 0 %}
+                <ul style="list-style-type: square; margin-left: 20px;">
+                {% for usuario in act.usuarios_inscritos.all %}
+                    <li style="background: none; border: none; padding: 2px; margin: 0;">{{ usuario.nombre }} ({{ usuario.email }})</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p style="color: #888;"><i>Aún no hay nadie apuntado a esta actividad.</i></p>
+            {% endif %}
+            
+            {% endwith %}
+        </div>
+        {% empty %}
+        <p>No hay actividades programadas en el sistema.</p>
+        {% endfor %}
+    </div>
+
+    <br>
+    <a href="{% url 'inicio' %}" class="btn">Volver al inicio</a>
+{% endblock %}
